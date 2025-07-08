@@ -9,22 +9,27 @@ import SwiftUI
 
 struct EmptyPlantView: View {
     
-    @State private var isAddingPlant: Bool = false
+    @State private var showAddScreen: Bool = false
     var onAddPlant: (_ name: String) -> Void
     
     var body: some View {
-        VStack{
-            Button(action: {isAddingPlant = true}){
-                Image(systemName: "plus.circle.fill")
-                    .resizable()
-                    .frame(width: 60, height: 60)
-                    .foregroundColor(.green)
-            }
-        }
-        .sheet(isPresented: $isAddingPlant){
-            AddPlantView{name in
-                onAddPlant(name)
-                isAddingPlant = false
+        NavigationStack{
+            VStack{
+                NavigationLink(
+                    destination: AddPlantView{name in
+                        onAddPlant(name)
+                        showAddScreen = false
+                    },
+                    isActive: $showAddScreen
+                ){
+                    EmptyView()
+                }
+                Button(action: {showAddScreen = true}){
+                    Image(systemName: "plus.circle.fill")
+                        .resizable()
+                        .frame(width: 60, height: 60)
+                        .foregroundColor(.green)
+                }
             }
         }
     }

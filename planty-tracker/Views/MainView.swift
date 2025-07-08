@@ -11,21 +11,15 @@ struct MainView: View {
     @StateObject private var viewModel = PlantViewModel()
 
     var body: some View {
-        NavigationView{
+        NavigationStack{
             if viewModel.plants.isEmpty {
                 EmptyPlantView{
                     name in
-                    let newPlant = Plant(id: UUID(), name: name)
-                    viewModel.plants.append(newPlant)
+                    viewModel.addPlant(name: name)
                 }
             } else{
-                PlantListView(plants: viewModel.plants)
+                PlantListView(plants: viewModel.plants, onAddPlant: {name in viewModel.addPlant(name: name)})
             }
         }
     }
-}
-
-
-#Preview {
-    MainView()
 }
