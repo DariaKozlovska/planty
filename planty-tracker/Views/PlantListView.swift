@@ -8,25 +8,19 @@
 import SwiftUI
 
 struct PlantListView: View {
+    
     let plants: [Plant]
     @State private var showAddScreen: Bool = false
     var onAddPlant: (_ name: String) -> Void
+    var onDeletePlant: (_ plant: Plant) -> Void
     
     var body: some View {
         NavigationStack{
             ScrollView{
                 LazyVStack(spacing: 16){
-                    HStack{
-                        NavigationLink(
-                            destination: AddPlantView{name in
-                                onAddPlant(name)
-                                showAddScreen = false
-                            },
-                            isActive: $showAddScreen
-                        ){
-                            EmptyView()
-                        }
+                    HStack(){
                         Text("Cześć!")
+                        Spacer()
                         Button(action: {showAddScreen = true}){
                             Image(systemName: "plus.circle.fill")
                                 .resizable()
@@ -35,6 +29,7 @@ struct PlantListView: View {
                                 .foregroundColor(Color.green)
                         }
                     }
+                    
                     ForEach(plants){ plant in
                         VStack{
                             RoundedRectangle(cornerRadius: 16)
@@ -45,11 +40,18 @@ struct PlantListView: View {
                                         Image(systemName: "leaf.fill")
                                             .resizable()
                                             .scaledToFit()
-                                            .padding(20)
                                             .foregroundColor(.green)
+                                            .frame(width: 32, height: 32)
                                         Text(plant.name)
                                             .font(.headline)
                                             .padding(.top, 8)
+                                        Button(action: {onDeletePlant(plant)}){
+                                            Image(systemName: "trash.fill")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .foregroundColor(.red)
+                                                .frame(width:24, height:24)
+                                        }
                                     }
                                 )
                         }
@@ -59,6 +61,12 @@ struct PlantListView: View {
                     }
                 }
                 .padding(16)
+            }
+            .navigationDestination(isPresented: $showAddScreen){
+                AddPlantView {newPlantName in
+                    onAddPlant(newPlantName)
+                    showAddScreen = false
+                }
             }
         }
     }

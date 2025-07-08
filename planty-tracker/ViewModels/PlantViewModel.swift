@@ -17,4 +17,8 @@ class PlantViewModel: ObservableObject {
         let newPlant = Plant(id: UUID(), name: name)
         plants.append(newPlant)
     }
+    
+    func deletePlant(plant: Plant){
+        plants.removeAll{ $0.id == plant.id}
+    }
 }
