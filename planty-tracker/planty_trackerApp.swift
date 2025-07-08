@@ -11,7 +11,7 @@ import SwiftUI
 struct planty_trackerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
         }
     }
 }
