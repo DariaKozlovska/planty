@@ -14,7 +14,7 @@ class PlantViewModel: ObservableObject {
     init() {}
     
     func addPlant(name: String) {
-        let newPlant = Plant(id: UUID(), name: name)
+        let newPlant = Plant(name: name)
         plants.append(newPlant)
     }
     

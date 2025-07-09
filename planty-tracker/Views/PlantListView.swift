@@ -12,7 +12,7 @@ struct PlantListView: View {
     let plants: [Plant]
     @State private var showAddScreen: Bool = false
     var onAddPlant: (_ name: String) -> Void
-    var onDeletePlant: (_ plant: Plant) -> Void
+    var onDeletePlant: (_ plant: Plant)-> Void
     
     var body: some View {
         NavigationStack{
@@ -30,34 +30,30 @@ struct PlantListView: View {
                         }
                     }
                     
+                    
                     ForEach(plants){ plant in
-                        VStack{
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.white)
-                                .frame(height: 120)
-                                .overlay(
-                                    VStack{
-                                        Image(systemName: "leaf.fill")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .foregroundColor(.green)
-                                            .frame(width: 32, height: 32)
-                                        Text(plant.name)
-                                            .font(.headline)
-                                            .padding(.top, 8)
-                                        Button(action: {onDeletePlant(plant)}){
-                                            Image(systemName: "trash.fill")
+                        NavigationLink(destination:  PlantDetailView(plant: plant, onDeletePlant: onDeletePlant )){
+                            VStack{
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(Color.white)
+                                    .frame(height: 120)
+                                    .overlay(
+                                        VStack{
+                                            Image(systemName: "leaf.fill")
                                                 .resizable()
                                                 .scaledToFit()
-                                                .foregroundColor(.red)
-                                                .frame(width:24, height:24)
+                                                .foregroundColor(.green)
+                                                .frame(width: 32, height: 32)
+                                            Text(plant.name)
+                                                .font(.headline)
+                                                .padding(.top, 8)
                                         }
-                                    }
-                                )
+                                    )
+                            }
+                            .cornerRadius(16)
+                            .shadow(radius: 8)
+                            .background(Color.white)
                         }
-                        .cornerRadius(16)
-                        .shadow(radius: 8)
-                        .background(Color.white)
                     }
                 }
                 .padding(16)

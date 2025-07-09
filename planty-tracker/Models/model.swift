@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Plant: Identifiable, Codable {
-    let id : UUID
+    let id = UUID()
     let name : String
 //    let img : String?
 }
