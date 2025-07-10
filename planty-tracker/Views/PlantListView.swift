@@ -9,10 +9,11 @@ import SwiftUI
 
 struct PlantListView: View {
     
-    let plants: [Plant]
+    @ObservedObject var viewModel: PlantViewModel
     @State private var showAddScreen: Bool = false
     var onAddPlant: (_ name: String) -> Void
     var onDeletePlant: (_ plant: Plant)-> Void
+    var onSavePlant: (_ plant: Plant, _ newName: String) -> Void
     
     var body: some View {
         NavigationStack{
@@ -31,28 +32,18 @@ struct PlantListView: View {
                     }
                     
                     
-                    ForEach(plants){ plant in
-                        NavigationLink(destination:  PlantDetailView(plant: plant, onDeletePlant: onDeletePlant )){
-                            VStack{
-                                RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color.white)
-                                    .frame(height: 120)
-                                    .overlay(
-                                        VStack{
-                                            Image(systemName: "leaf.fill")
-                                                .resizable()
-                                                .scaledToFit()
-                                                .foregroundColor(.green)
-                                                .frame(width: 32, height: 32)
-                                            Text(plant.name)
-                                                .font(.headline)
-                                                .padding(.top, 8)
-                                        }
-                                    )
-                            }
-                            .cornerRadius(16)
-                            .shadow(radius: 8)
-                            .background(Color.white)
+                    ForEach(viewModel.plants){ plant in
+                        NavigationLink(
+                            destination:  PlantDetailView(
+                                plantId: plant.id,
+                                viewModel: viewModel,
+                                onDeletePlant: onDeletePlant,
+                                onSave: {newName in
+                                    onSavePlant(plant, newName)
+                                }
+                            )
+                        ){
+                            PlantCardView(plant: plant)
                         }
                     }
                 }

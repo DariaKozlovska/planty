@@ -18,9 +18,13 @@ struct MainView: View {
                     viewModel.addPlant(name: name)
                 }
             } else{
-                PlantListView(plants: viewModel.plants,
+                PlantListView(viewModel: viewModel,
                               onAddPlant: {name in viewModel.addPlant(name: name)},
-                              onDeletePlant: {plant in viewModel.deletePlant(plant: plant)})
+                              onDeletePlant: {plant in viewModel.deletePlant(plant: plant)},
+                              onSavePlant: { plant, newName in
+                                  viewModel.updatePlant(plant: plant, newName: newName)
+                              }
+                )
             }
         }
     }
