@@ -25,10 +25,17 @@ struct PlantDetailView: View{
         ScrollView{
             if let plant = plant{
                 VStack{
-                    Image(systemName: "leaf.fill")
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                        .foregroundColor(.green)
+                    if let image = plant.photos.first?.image{
+                        Image(uiImage: image)
+                            .resizable()
+                            .frame(width: 100, height: 100)
+                            .scaledToFit()
+                    } else {
+                        Image(systemName: "leaf.fill")
+                            .resizable()
+                            .frame(width: 100, height: 100)
+                            .foregroundColor(.green)
+                    }
                     Text(plant.name)
                         .font(.title)
                 }

@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+import UserNotifications
+import PhotosUI
 
 class PlantViewModel: ObservableObject {
     @Published var plants: [Plant] = [] {
@@ -22,8 +24,15 @@ class PlantViewModel: ObservableObject {
         loadPlants()
     }
     
-    func addPlant(name: String) {
-        let newPlant = Plant(name: name)
+    func addPlant(name: String, frequency: Int, notes: String, image: UIImage?) {
+        var photos: [PlantPhoto] = []
+
+        if let image = image {
+            let photo = PlantPhoto(image: image, date: Date())
+            photos.append(photo)
+        }
+
+        let newPlant = Plant(name: name, wateringFrequency: frequency, notes: notes, photos: photos)
         plants.append(newPlant)
     }
     
@@ -36,19 +45,36 @@ class PlantViewModel: ObservableObject {
             plants[index].name = newName
         }
     }
+    
+    func addPhotos(to plant: Plant, image: UIImage) {
+        if let index = plants.firstIndex(where: { $0.id == plant.id }) {
+            let newPhoto = PlantPhoto(image: image, date: Date())
+            plants[index].photos.append(newPhoto)
+        }
+    }
 
     
     private func savePlants () {
-        if let encoded = try? JSONEncoder().encode(plants) {
+        do {
+            let encoded = try JSONEncoder().encode(plants)
             UserDefaults.standard.set(encoded, forKey: plantKey)
+        } catch {
+            print("Błąd zapisu roślin: \(error.localizedDescription)")
         }
     }
     
-    private func loadPlants () {
-        if let savedData = UserDefaults.standard.data(forKey: plantKey) {
-            if let decoded = try? JSONDecoder().decode([Plant].self, from: savedData) {
-                plants = decoded
-            }
+    private func loadPlants() {
+        guard let savedData = UserDefaults.standard.data(forKey: plantKey) else {
+            print("Brak zapisanych roślin")
+            return
+        }
+        do {
+            let decoded = try JSONDecoder().decode([Plant].self, from: savedData)
+            plants = decoded
+            print("Dane roślin wczytane")
+        } catch {
+            print("Błąd dekodowania roślin: \(error.localizedDescription)")
+            UserDefaults.standard.removeObject(forKey: plantKey)
         }
     }
 }

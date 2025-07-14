@@ -14,12 +14,13 @@ struct MainView: View {
         NavigationStack{
             if viewModel.plants.isEmpty {
                 EmptyPlantView{
-                    name in
-                    viewModel.addPlant(name: name)
+                    name, frequency, notes, image in
+                    viewModel.addPlant(name: name, frequency: frequency, notes: notes, image: image)
                 }
             } else{
                 PlantListView(viewModel: viewModel,
-                              onAddPlant: {name in viewModel.addPlant(name: name)},
+                              onAddPlant: {name, frequency, notes, image in
+                    viewModel.addPlant(name: name, frequency: frequency, notes: notes, image: image)},
                               onDeletePlant: {plant in viewModel.deletePlant(plant: plant)},
                               onSavePlant: { plant, newName in
                                   viewModel.updatePlant(plant: plant, newName: newName)

@@ -2,7 +2,7 @@
 //  planty_trackerApp.swift
 //  planty-tracker
 //
-//  Created by Nikita Pidhornyi on 07/07/2025.
+//  Created by Daria Kozlovska on 07/07/2025.
 //
 
 import SwiftUI

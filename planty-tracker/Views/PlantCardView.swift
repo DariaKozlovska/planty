@@ -17,11 +17,18 @@ struct PlantCardView: View {
                 .frame(height: 120)
                 .overlay(
                     VStack{
-                        Image(systemName: "leaf.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundColor(.green)
-                            .frame(width: 32, height: 32)
+                        if let image = plant.photos.first?.image {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 32, height: 32)
+                        } else {
+                            Image(systemName: "leaf.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundColor(.green)
+                                .frame(width: 32, height: 32)
+                        }
                         Text(plant.name)
                             .font(.headline)
                             .padding(.top, 8)
