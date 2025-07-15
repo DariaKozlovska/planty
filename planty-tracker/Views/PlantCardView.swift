@@ -17,7 +17,7 @@ struct PlantCardView: View {
                 .frame(height: 120)
                 .overlay(
                     VStack{
-                        if let image = plant.photos.first?.image {
+                        if let image = plant.profilePhoto {
                             Image(uiImage: image)
                                 .resizable()
                                 .scaledToFit()

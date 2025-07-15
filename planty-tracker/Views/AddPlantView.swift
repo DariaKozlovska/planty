@@ -8,22 +8,14 @@
 import SwiftUI
 import PhotosUI
 
-
-extension UIImage {
-    func resized(to size: CGSize) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(size, false, 0.6)
-        defer { UIGraphicsEndImageContext() }
-        draw(in: CGRect(origin: .zero, size: size))
-        return UIGraphicsGetImageFromCurrentImageContext()
-    }
-}
-
 struct AddPlantView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var name: String = ""
     @State private var waterFrequency: Int = 1
     @State private var notes: String = ""
+    @State private var lastWateredDate: Date = Date()
+    @State private var profilePhoto: UIImage?
     
     @State private var isShowingPhotoSourceSheet: Bool = false
     @State private var isShowingImagePicker: Bool = false
@@ -32,7 +24,7 @@ struct AddPlantView: View {
     @State private var selectedItem: PhotosPickerItem?
     @State private var selectedImage: UIImage?
 
-    var onSave: (_ name: String, _ waterFrequency: Int, _ notes: String, _ image: UIImage?) -> Void
+    var onSave: (_ name: String, _ waterFrequency: Int, _ notes: String, _ image: UIImage?, _ lastWateredDate: Date, _ profilePhoto: UIImage?) -> Void
     
     var body: some View {
         NavigationView{
@@ -44,6 +36,7 @@ struct AddPlantView: View {
                     Text("Notes")
                     TextEditor(text: $notes)
                         .frame(height: 100)
+                    DatePicker("Data ostatniego polewu", selection: $lastWateredDate, displayedComponents: .date)
                 }
                 Section{
                     if let image = selectedImage {
@@ -60,7 +53,7 @@ struct AddPlantView: View {
             .toolbar{
                 ToolbarItem(placement: .confirmationAction){
                     Button("Dodaj"){
-                        onSave(name, waterFrequency, notes, selectedImage)
+                        onSave(name, waterFrequency, notes, selectedImage, lastWateredDate, profilePhoto)
                         dismiss()
                     }
                     .disabled(name.isEmpty)

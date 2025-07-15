@@ -11,7 +11,7 @@ struct PlantListView: View {
     
     @ObservedObject var viewModel: PlantViewModel
     @State private var showAddScreen: Bool = false
-    var onAddPlant: (_ name: String, _ frequency: Int, _ notes: String, _ image: UIImage?) -> Void
+    var onAddPlant: (_ name: String, _ frequency: Int, _ notes: String, _ image: UIImage?, _ lastWateredDate: Date, _ profilePhoto: UIImage?) -> Void
     var onDeletePlant: (_ plant: Plant)-> Void
     var onSavePlant: (_ plant: Plant, _ newName: String) -> Void
     
@@ -50,8 +50,8 @@ struct PlantListView: View {
                 .padding(16)
             }
             .navigationDestination(isPresented: $showAddScreen){
-                AddPlantView {name, frequency, notes, image in
-                    onAddPlant(name, frequency, notes, image)
+                AddPlantView {name, frequency, notes, image, lastWateredDate, profilePhoto in
+                    onAddPlant(name, frequency, notes, image, lastWateredDate, profilePhoto)
                     showAddScreen = false
                 }
             }

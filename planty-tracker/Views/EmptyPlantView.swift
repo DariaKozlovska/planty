@@ -10,14 +10,14 @@ import SwiftUI
 struct EmptyPlantView: View {
     
     @State private var showAddScreen: Bool = false
-    var onAddPlant: (_ name: String, _ frequency: Int, _ notes: String, _ image: UIImage?) -> Void
+    var onAddPlant: (_ name: String, _ frequency: Int, _ notes: String, _ image: UIImage?, _ lastedWateredDate: Date, _ profilePhoto: UIImage?) -> Void
     
     var body: some View {
         NavigationStack{
             VStack{
                 NavigationLink(
-                    destination: AddPlantView{ name, frequency, notes, image in
-                            onAddPlant(name, frequency, notes, image)
+                    destination: AddPlantView{ name, frequency, notes, image, lastWateredDate, profilePhoto in
+                            onAddPlant(name, frequency, notes, image, lastWateredDate, profilePhoto)
                         showAddScreen = false
                     },
                     isActive: $showAddScreen

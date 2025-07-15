@@ -24,7 +24,7 @@ class PlantViewModel: ObservableObject {
         loadPlants()
     }
     
-    func addPlant(name: String, frequency: Int, notes: String, image: UIImage?) {
+    func addPlant(name: String, frequency: Int, notes: String, image: UIImage?, lastWateredDate: Date, profilePhoto: UIImage?) {
         var photos: [PlantPhoto] = []
 
         if let image = image {
@@ -32,7 +32,7 @@ class PlantViewModel: ObservableObject {
             photos.append(photo)
         }
 
-        let newPlant = Plant(name: name, wateringFrequency: frequency, notes: notes, photos: photos)
+        let newPlant = Plant(name: name, wateringFrequency: frequency, lastWateredDates: [lastWateredDate], notes: notes, profilePhoto: image, photos: photos)
         plants.append(newPlant)
     }
     
@@ -52,9 +52,20 @@ class PlantViewModel: ObservableObject {
             plants[index].photos.append(newPhoto)
         }
     }
-
     
-    private func savePlants () {
+    func deletePhoto(from plant: Plant, at photoIndex: Int) {
+        if let plantIndex = plants.firstIndex(where: { $0.id == plant.id }) {
+            plants[plantIndex].photos.remove(at: photoIndex)
+        }
+    }
+    
+    func waterPlant(plant: Plant) {
+        if let index = plants.firstIndex(where: { $0.id == plant.id }) {
+            plants[index].lastWateredDates.insert(Date(), at: 0)
+        }
+    }
+    
+    func savePlants () {
         do {
             let encoded = try JSONEncoder().encode(plants)
             UserDefaults.standard.set(encoded, forKey: plantKey)

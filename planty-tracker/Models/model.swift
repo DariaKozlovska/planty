@@ -15,14 +15,28 @@ struct Plant: Identifiable, Codable {
     var wateringFrequency: Int
     var lastWateredDates: [Date]
     var notes: String
+    var profilePhotoData: Data?
     var photos: [PlantPhoto]
     
-    init(id: UUID = UUID(), name: String, wateringFrequency: Int = 2, lastWateredDates: [Date] = [], notes: String = "", photos: [PlantPhoto] = []) {
+    var profilePhoto: UIImage? {
+        get {
+            if let data = profilePhotoData {
+                return UIImage(data: data)
+            }
+            return nil
+        }
+        set {
+            profilePhotoData = newValue?.jpegData(compressionQuality: 0.8)
+        }
+    }
+    
+    init(id: UUID = UUID(), name: String, wateringFrequency: Int = 2, lastWateredDates: [Date] = [], notes: String = "", profilePhoto: UIImage?, photos: [PlantPhoto] = []) {
         self.id = id
         self.name = name
         self.wateringFrequency = wateringFrequency
         self.lastWateredDates = lastWateredDates
         self.notes = notes
+        self.profilePhotoData = profilePhoto?.jpegData(compressionQuality: 0.8)
         self.photos = photos
     }
 }
