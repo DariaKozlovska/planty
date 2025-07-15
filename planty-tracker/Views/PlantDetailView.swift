@@ -42,8 +42,16 @@ struct PlantDetailView: View{
                     Text(plant.notes)
                     Text(plant.wateringFrequency.description)
                     Section(header: Text("Historia podlewiań")){
-                        ForEach(plant.lastWateredDates, id: \.self){ date in
-                            Text(date.formatted(date: .abbreviated, time: .omitted))
+                        ForEach(Array(plant.lastWateredDates.enumerated()), id: \.element){ index, date in
+                            VStack{
+                                Text(date.formatted(date: .abbreviated, time: .omitted))
+                                Button(action: {viewModel.deleteWateredDate(from: plant, at: index)}){
+                                    Image(systemName: "xmark.circle")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                        .foregroundStyle(.red)
+                                }
+                            }
                         }
                     }
                     ScrollView{

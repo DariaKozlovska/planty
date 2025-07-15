@@ -45,6 +45,12 @@ struct EditPlantView: View{
                             .resizable()
                             .frame(width: 100, height: 100)
                             .scaledToFit()
+                        Button(action: {plant.profilePhoto = nil}){
+                            Image(systemName: "cross.circle")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(.gray)
+                        }
                     } else {
                         Image(systemName: "leaf.fill")
                             .resizable()

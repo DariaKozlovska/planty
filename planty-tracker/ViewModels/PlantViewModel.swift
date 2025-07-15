@@ -65,6 +65,12 @@ class PlantViewModel: ObservableObject {
         }
     }
     
+    func deleteWateredDate(from plant: Plant, at wateredIndex: Int){
+        if let plantIndex = plants.firstIndex(where: {$0.id == plant.id}){
+            plants[plantIndex].lastWateredDates.remove(at: wateredIndex)
+        }
+    }
+    
     func savePlants () {
         do {
             let encoded = try JSONEncoder().encode(plants)
