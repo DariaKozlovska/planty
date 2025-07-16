@@ -17,6 +17,7 @@ struct PlantDetailView: View{
     @State private var showDeleteConfirmation: Bool = false
     @State private var showEditView: Bool = false
     @State private var showImagePicker: Bool = false
+    @EnvironmentObject var themeManager: ThemeManager
     
     var plant: Plant?{
         viewModel.plants.first { $0.id == plantId }
@@ -118,7 +119,9 @@ struct PlantDetailView: View{
                     EditPlantView(plant: $viewModel.plants[index]) {
                         viewModel.savePlants()
                     }
-                }        }
+                    .environmentObject(themeManager)
+                }
+            }
             .alert("Czy na pewno chcesz usunąć tę plantę?", isPresented: $showDeleteConfirmation){
                 Button("Nie", role: .cancel){}
                 Button("Tak", role: .destructive){

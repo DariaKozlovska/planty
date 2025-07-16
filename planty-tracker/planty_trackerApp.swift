@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct planty_trackerApp: App {
+    @StateObject private var themeManager = ThemeManager()
+    
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environmentObject(themeManager)
         }
     }
 }
