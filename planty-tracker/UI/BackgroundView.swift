@@ -9,11 +9,17 @@ import SwiftUI
 
 struct BackgroundView: View {
     var body: some View {
-        Image("Background")
-            .resizable()
-            .scaledToFill()
-            .ignoresSafeArea()
-            .frame(minWidth: 0, maxWidth: .infinity)
+//        Image("Background")
+//            .resizable()
+//            .scaledToFill()
+//            .ignoresSafeArea()
+//            .frame(minWidth: 0, maxWidth: .infinity)
+        LinearGradient(
+            gradient: Gradient(colors: [.lightYellow, .lightYellow, .darkTeal]),
+            startPoint: .top,
+            endPoint: .bottom
+        )
+        .ignoresSafeArea()
     }
 }
 

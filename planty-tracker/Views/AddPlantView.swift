@@ -70,8 +70,8 @@ struct AddPlantView: View {
                 }
                 
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Anuluj") {
-                        dismiss()
+                    Button(action: {dismiss()}) {
+                        Text("Anuluj")
                     }
                 }
             }
