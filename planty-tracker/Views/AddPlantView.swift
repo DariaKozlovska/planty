@@ -5,6 +5,7 @@
 //  Created by Daria Kozlovska on 08/07/2025.
 //
 
+
 import SwiftUI
 import PhotosUI
 
@@ -27,53 +28,66 @@ struct AddPlantView: View {
     var onSave: (_ name: String, _ waterFrequency: Int, _ notes: String, _ image: UIImage?, _ lastWateredDate: Date, _ profilePhoto: UIImage?) -> Void
     
     var body: some View {
-        NavigationView{
-            Form{
-                VStack{
-                    Text("Dodaj roślinę")
-                    TextField("Nazwa", text: $name)
-                    Stepper("Podlewaj co \(waterFrequency) dni:", value: $waterFrequency, in: 1...7)
-                    Text("Notes")
-                    TextEditor(text: $notes)
-                        .frame(height: 100)
-                    DatePicker("Data ostatniego polewu", selection: $lastWateredDate, displayedComponents: .date)
-                }
-                Section{
-                    if let image = selectedImage {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame( height: 150)
+        NavigationView {
+            ZStack {
+                BackgroundView()
+                
+                Form {
+                    VStack{
+                        Text("Dodaj roślinę")
+                        TextField("Nazwa", text: $name)
+                        Stepper("Podlewaj co \(waterFrequency) dni:", value: $waterFrequency, in: 1...7)
+                        Text("Notes")
+                        TextEditor(text: $notes)
+                            .frame(height: 100)
+                        DatePicker("Data ostatniego polewu", selection: $lastWateredDate, displayedComponents: .date)
                     }
-                    Button("Dodaj zdjęcie"){
-                        isShowingPhotoSourceSheet = true
+                    Section{
+                        if let image = selectedImage {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFit()
+                                .frame( height: 150)
+                        }
+                        Button("Dodaj zdjęcie"){
+                            isShowingPhotoSourceSheet = true
+                        }
                     }
                 }
+                .scrollContentBackground(.hidden)
+                .background(Color.clear)
+                .padding(.horizontal, 8)
             }
-            .toolbar{
-                ToolbarItem(placement: .confirmationAction){
-                    Button("Dodaj"){
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Zapisz") {
                         onSave(name, waterFrequency, notes, selectedImage, lastWateredDate, profilePhoto)
                         dismiss()
                     }
                     .disabled(name.isEmpty)
+                    .bold()
                 }
-                ToolbarItem(placement: .cancellationAction){
-                    Button("Anuluj"){
+                
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Anuluj") {
                         dismiss()
                     }
                 }
             }
-            .confirmationDialog("Wybierz źródło zdjęcia", isPresented: $isShowingPhotoSourceSheet){
-                Button("Zrób zdjęcie"){
+            .confirmationDialog("Wybierz źródło zdjęcia",
+                                isPresented: $isShowingPhotoSourceSheet) {
+                Button("Zrób zdjęcie") {
                     imageSource = .camera
                     isShowingImagePicker = true
                 }
-                Button("Wybierz zdjęcie z galerii"){
+                
+                Button("Wybierz z galerii") {
                     imageSource = .photoLibrary
                     isShowingImagePicker = true
                 }
-                Button("Anuluj", role: .cancel){}
+                
+                Button("Anuluj", role: .cancel) {}
             }
             .sheet(isPresented: $isShowingImagePicker) {
                 ImagePicker(sourceType: imageSource) { image in
@@ -81,6 +95,14 @@ struct AddPlantView: View {
                 }
             }
         }
+        .navigationViewStyle(.stack)
+        .navigationBarBackButtonHidden(true)
     }
 }
 
+// Podgląd dla Xcode
+struct AddPlantView_Previews: PreviewProvider {
+    static var previews: some View {
+        AddPlantView { _, _, _, _, _, _ in }
+    }
+}

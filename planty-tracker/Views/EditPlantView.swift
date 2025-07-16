@@ -38,36 +38,41 @@ struct EditPlantView: View{
     
     var body: some View{
         NavigationView{
-            Form{
-                VStack{
-                    if let image = plant.profilePhoto {
-                        Image(uiImage: image)
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                            .scaledToFit()
-                        Button(action: {plant.profilePhoto = nil}){
-                            Image(systemName: "cross.circle")
+            ZStack{
+                BackgroundView()
+                Form{
+                    VStack{
+                        if let image = plant.profilePhoto {
+                            Image(uiImage: image)
                                 .resizable()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.gray)
+                                .frame(width: 100, height: 100)
+                                .scaledToFit()
+                            Button(action: {plant.profilePhoto = nil}){
+                                Image(systemName: "cross.circle")
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(.gray)
+                            }
+                        } else {
+                            Image(systemName: "leaf.fill")
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .foregroundColor(.green)
                         }
-                    } else {
-                        Image(systemName: "leaf.fill")
-                            .resizable()
-                            .frame(width: 100, height: 100)
-                            .foregroundColor(.green)
+                        Button(action: {isShowingPhotoSourceSheet = true}){
+                            Text("Zmień zdjęcie profilowe")
+                        }
+                        Text("Edytuj nazwę")
+                        TextField("Nazwa", text: $name)
+                        Stepper("Podlewaj co \(waterFrequency) dni:", value: $waterFrequency, in: 1...7)
+                        Text("Notes")
+                        TextEditor(text: $notes)
+                            .frame(height: 100)
+                        DatePicker("Data ostatniego polewu", selection: $lastWateredDate, displayedComponents: .date)
                     }
-                    Button(action: {isShowingPhotoSourceSheet = true}){
-                        Text("Zmień zdjęcie profilowe")
-                    }
-                    Text("Edytuj nazwę")
-                    TextField("Nazwa", text: $name)
-                    Stepper("Podlewaj co \(waterFrequency) dni:", value: $waterFrequency, in: 1...7)
-                    Text("Notes")
-                    TextEditor(text: $notes)
-                        .frame(height: 100)
-                    DatePicker("Data ostatniego polewu", selection: $lastWateredDate, displayedComponents: .date)
                 }
+                .scrollContentBackground(.hidden)
+                .background(Color.clear)
             }
             .toolbar{
                 ToolbarItem(placement: .confirmationAction){
@@ -115,5 +120,7 @@ struct EditPlantView: View{
                 }
             }
         }
+        .navigationViewStyle(.stack)
+        .navigationBarBackButtonHidden(true)
     }
 }
