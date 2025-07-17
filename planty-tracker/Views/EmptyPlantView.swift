@@ -47,7 +47,6 @@ struct EmptyPlantView: View {
                                         .frame(height: 8)
                                     Image(systemName: "plus.circle.fill")
                                         .foregroundColor(.deepTeal)
-                                        .frame(width: 26, height: 26)
                                 }
                             )
                     }

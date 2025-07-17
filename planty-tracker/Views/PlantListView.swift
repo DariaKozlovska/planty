@@ -22,15 +22,15 @@ struct PlantListView: View {
                 LazyVStack(spacing: 16){
                     HStack(){
                         Text("Cześć!")
+                            .font(.custom("Exo2-SemiBold", size: 20))
                         Spacer()
                         ThemeToogleButton()
-                            .padding()
                         Button(action: {showAddScreen = true}){
                             Image(systemName: "plus.circle.fill")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 32, height: 32)
-                                .foregroundColor(Color.green)
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(themeManager.isDarkMode ? .lightYellow.opacity(0.8) :  .darkTeal)
                         }
                     }
                     
