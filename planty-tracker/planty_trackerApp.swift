@@ -15,6 +15,7 @@ struct planty_trackerApp: App {
         WindowGroup {
             MainView()
                 .environmentObject(themeManager)
+                .environment(\.font, .custom("Exo2-Regular", size: 16))
         }
     }
 }
