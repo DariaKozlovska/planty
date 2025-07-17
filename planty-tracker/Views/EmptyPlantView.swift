@@ -15,22 +15,7 @@ struct EmptyPlantView: View {
     
     var body: some View {
         NavigationStack{
-            VStack{
-                LazyHStack{
-                    Spacer()
-                    Button(action: {
-                        themeManager.isDarkMode.toggle()
-                    }) {
-                        Image(systemName: themeManager.isDarkMode ? "moon.fill" : "sun.max.fill")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.black.opacity(0.3))
-                            .clipShape(Circle())
-                            .frame(width: 50, height: 50)
-                    }
-                    .padding()
-                }
-                
+            VStack(){
                 NavigationLink(
                     destination: AddPlantView{ name, frequency, notes, image, lastWateredDate, profilePhoto in
                             onAddPlant(name, frequency, notes, image, lastWateredDate, profilePhoto)
@@ -42,13 +27,50 @@ struct EmptyPlantView: View {
                     EmptyView()
                 }
                 Button(action: {showAddScreen = true}){
-                    Image(systemName: "plus.circle.fill")
-                        .resizable()
-                        .frame(width: 60, height: 60)
-                        .foregroundColor(.green)
+                    VStack{
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color.white)
+                            .frame(width: 280, height: 80)
+                            .overlay(
+                                VStack{
+                                    HStack{
+                                        Text("Dodaj pierwszą roślinę")
+                                            .font(.custom("Exo2-Regular", size: 18))
+                                            .foregroundColor(.deepTeal)
+                                        Image("Plant")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 20, height: 20)
+                                            .padding(0)
+                                    }
+                                    Spacer()
+                                        .frame(height: 8)
+                                    Image(systemName: "plus.circle.fill")
+                                        .foregroundColor(.deepTeal)
+                                        .frame(width: 26, height: 26)
+                                }
+                            )
+                    }
+                    .cornerRadius(16)
+                    .shadow(radius: 8)
+//                    Image(systemName: "plus.circle.fill")
+//                        .resizable()
+//                        .frame(width: 60, height: 60)
+//                        .foregroundColor(.green)
+                }
+            }
+            .toolbar{
+                ToolbarItem(){
+                    ThemeToogleButton()
                 }
             }
             .preferredColorScheme(themeManager.isDarkMode ? .dark : .light)
         }
     }
 }
+
+#Preview {
+    EmptyPlantView(onAddPlant: { _, _, _, _, _, _ in })
+        .environmentObject(ThemeManager())
+}
+

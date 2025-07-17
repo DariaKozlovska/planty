@@ -101,8 +101,8 @@ struct AddPlantView: View {
 }
 
 // Podgląd dla Xcode
-struct AddPlantView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddPlantView { _, _, _, _, _, _ in }
-    }
-}
+//struct AddPlantView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddPlantView { _, _, _, _, _, _ in }
+//    }
+//}

@@ -21,7 +21,7 @@ struct BackgroundView: View {
                 )
             } else {
                 LinearGradient(
-                    gradient: Gradient(colors: [.lightYellow, .lightYellow, .darkTeal]),
+                    gradient: Gradient(colors: [.lightYellow, .darkTeal]),
                     startPoint: .top,
                     endPoint: .bottom
                 )

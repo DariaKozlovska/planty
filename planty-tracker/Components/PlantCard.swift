@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PlantCardView: View {
+struct PlantCard: View {
     let plant: Plant
     
     var body: some View {

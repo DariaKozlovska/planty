@@ -23,17 +23,8 @@ struct PlantListView: View {
                     HStack(){
                         Text("Cześć!")
                         Spacer()
-                        Button(action: {
-                            themeManager.isDarkMode.toggle()
-                        }) {
-                            Image(systemName: themeManager.isDarkMode ? "moon.fill" : "sun.max.fill")
-                                .foregroundColor(.white)
-                                .padding()
-                                .background(Color.black.opacity(0.3))
-                                .clipShape(Circle())
-                                .frame(width: 50, height: 50)
-                        }
-                        .padding()
+                        ThemeToogleButton()
+                            .padding()
                         Button(action: {showAddScreen = true}){
                             Image(systemName: "plus.circle.fill")
                                 .resizable()
@@ -56,7 +47,7 @@ struct PlantListView: View {
                             )
                             .environmentObject(themeManager)
                         ){
-                            PlantCardView(plant: plant)
+                            PlantCard(plant: plant)
                         }
                     }
                 }
