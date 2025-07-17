@@ -156,8 +156,8 @@ struct AddPlantView: View {
                     selectedImage = image
                 }
             }
-            .alert("Czy na pewno chcesz anulować?", isPresented: $isShowingAlert){
-                Button("Anuluj") {
+            .alert("Czy na pewno chcesz wyjść?", isPresented: $isShowingAlert){
+                Button("Wyjdź") {
                     dismiss()
                 }
                 Button("Zostań", role: .cancel) {}
