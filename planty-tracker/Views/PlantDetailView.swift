@@ -29,34 +29,46 @@ struct PlantDetailView: View{
             ScrollView{
                 if let plant = plant{
                     VStack{
-                        if let image = plant.profilePhoto {
-                            Image(uiImage: image)
-                                .resizable()
-                                .frame(width: 100, height: 100)
-                                .scaledToFit()
-                        } else {
-                            Image(systemName: "leaf.fill")
-                                .resizable()
-                                .frame(width: 100, height: 100)
-                                .foregroundColor(.green)
-                        }
-                        Text(plant.name)
-                            .font(.title)
-                        Text(plant.notes)
-                        Text(plant.wateringFrequency.description)
-                        Section(header: Text("Historia podlewiań")){
-                            ForEach(Array(plant.lastWateredDates.enumerated()), id: \.element){ index, date in
-                                VStack{
-                                    Text(date.formatted(date: .abbreviated, time: .omitted))
-                                    Button(action: {viewModel.deleteWateredDate(from: plant, at: index)}){
-                                        Image(systemName: "xmark.circle")
-                                            .resizable()
-                                            .frame(width: 30, height: 30)
-                                            .foregroundStyle(.red)
-                                    }
-                                }
+                        
+                        Group {
+                            if let image = plant.profilePhoto {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 120, height: 120)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 5)
+                            } else {
+                                Image("Plant-2")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 80)
+                                    .padding(12)
+                                    .background(Color.darkTeal.opacity(0.15))
+                                    .clipShape(Circle())
                             }
                         }
+                        
+                        VStack(spacing: 4){
+                            Text(plant.name)
+                                .font(.custom("Exo2-SemiBold", size: 28))
+                                
+                            Text("Częstotliwość polewu: co \(plant.wateringFrequency.description) dni")
+                            
+                            
+                        }
+                        
+                        WaterCalendar(wateredDates: plant.lastWateredDates)
+                            .padding()
+                        
+                        VStack{
+                            if !plant.notes.isEmpty {
+                                Text(plant.notes)
+                                    .multilineTextAlignment(.center)
+                                    .background(.thinMaterial)
+                            }
+                        }
+                        
                         ScrollView{
                             HStack{
                                 ForEach(Array(plant.photos.enumerated()), id: \.element.id){ index, photo in
@@ -129,6 +141,79 @@ struct PlantDetailView: View{
                         onDeletePlant(plant)
                         dismiss()
                     }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                 }
             }
         }

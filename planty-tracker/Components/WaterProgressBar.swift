@@ -47,13 +47,13 @@ struct WaterProgressBar: View {
             .frame(height: 6)
         }
         .padding(.vertical, 8)
-        .onReceive(
-            Timer.publish(every: 2, on: .main, in: .common).autoconnect()
-        ) { newDate in
-            print("⏰ Timer triggered at: \(newDate)")
-            print(Date())
-            self.now = newDate
-        }
+//        .onReceive(
+//            Timer.publish(every: 2, on: .main, in: .common).autoconnect()
+//        ) { newDate in
+//            print("⏰ Timer triggered at: \(newDate)")
+//            print(Date())
+//            self.now = newDate
+//        }
     }
     
     private func formattedDate(_ date: Date) -> String {
