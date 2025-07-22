@@ -45,6 +45,11 @@ struct WaterCalendar: View {
         let weekday = calendar.component(.weekday, from: firstDayOfMonth)
         let firstWeekdayIndex = (weekday - calendar.firstWeekday + 7) % 7
         let timer = Timer.publish(every: 60, on: .main, in: .common).autoconnect()
+        var nextWateringDay: Date {
+            let sorted = wateredDates.sorted()
+            let last = sorted.last ?? Date()
+            return calendar.date(byAdding: .day , value: plant.wateringFrequency, to: last ) ?? Date()
+        }
 
         VStack(spacing: 16) {
             HStack {
@@ -108,19 +113,26 @@ struct WaterCalendar: View {
                                 alertMessage = "Czy chcesz w tym dniu podleć roślinę?"
                             }
                             showDatePicker = true
+                            
                         }){
                             Text("\(day)")
                                 .font(.caption)
-                                .fontWeight(calendar.isDate(date, inSameDayAs: today) ? .bold : .regular)
-                                .foregroundColor(calendar.isDate(date, inSameDayAs: today) ? .blue : .primary)
+                                .fontWeight(calendar.isDate(date , inSameDayAs: today) ? .bold : .regular)
+                                .foregroundColor(calendar.isDate(date , inSameDayAs: today) ? .blue : .primary)
                         }
 
                         if wateredDates.contains(where: { calendar.isDate($0, inSameDayAs: date) }) {
                             Image(systemName: "drop.fill")
                                 .foregroundColor(.teal)
+                        } else if calendar.isDate(date, inSameDayAs: nextWateringDay) {
+                            Image(systemName: "drop.fill")
+                                .foregroundColor(.teal)
+                                .opacity(0.3)
                         } else {
                             Spacer().frame(height: 16)
                         }
+                        
+
                     }
                     .frame(maxWidth: .infinity)
                     .padding(4)
@@ -145,14 +157,17 @@ struct WaterCalendar: View {
         }
         .alert(alertMessage, isPresented: $showDatePicker){
             Button("Nie", role: .cancel){}
-            Button("Tak"){
+            Button("Tak") {
                 if let date = chosenDate {
-                    if let index = wateredDates.firstIndex(where: {calendar.isDate($0, inSameDayAs: date)}){
+                    let cleanDate = calendar.startOfDay(for: date)
+                    
+                    if let index = wateredDates.firstIndex(where: { calendar.isDate($0, inSameDayAs: cleanDate) }) {
                         wateredDates.remove(at: index)
                         viewModel.deleteWateredDate(from: plant, at: index)
-                    } else{
-                        wateredDates.append(date)
-                        viewModel.wateredPlant(plant: plant, on: date)
+                    } else {
+                        wateredDates.append(cleanDate)
+                        wateredDates.sort(by: >)
+                        viewModel.wateredPlant(plant: plant, on: cleanDate)
                     }
                 }
             }

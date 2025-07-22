@@ -63,6 +63,7 @@ class PlantViewModel: ObservableObject {
         if let index = plants.firstIndex(where: { $0.id == plant.id }) {
             if !plants[index].lastWateredDates.contains(where: { Calendar.current.isDate($0, inSameDayAs: date) }) {
                 plants[index].lastWateredDates.insert(date, at: 0)
+                plants[index].lastWateredDates.sort(by: >)
             }
         }
     }
@@ -76,6 +77,7 @@ class PlantViewModel: ObservableObject {
     func deleteWateredDate(from plant: Plant, at wateredIndex: Int){
         if let plantIndex = plants.firstIndex(where: {$0.id == plant.id}){
             plants[plantIndex].lastWateredDates.remove(at: wateredIndex)
+            plants[plantIndex].lastWateredDates.sort(by: >)
         }
     }
     
