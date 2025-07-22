@@ -59,6 +59,14 @@ class PlantViewModel: ObservableObject {
         }
     }
     
+    func wateredPlant(plant: Plant, on date: Date) {
+        if let index = plants.firstIndex(where: { $0.id == plant.id }) {
+            if !plants[index].lastWateredDates.contains(where: { Calendar.current.isDate($0, inSameDayAs: date) }) {
+                plants[index].lastWateredDates.insert(date, at: 0)
+            }
+        }
+    }
+    
     func waterPlant(plant: Plant) {
         if let index = plants.firstIndex(where: { $0.id == plant.id }) {
             plants[index].lastWateredDates.insert(Date(), at: 0)

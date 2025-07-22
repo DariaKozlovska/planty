@@ -55,11 +55,11 @@ struct PlantDetailView: View{
                                 
                             Text("Częstotliwość polewu: co \(plant.wateringFrequency.description) dni")
                             
+                            WaterCalendar(plant: plant, viewModel: viewModel)
+                                .padding()
                             
                         }
-                        
-                        WaterCalendar(wateredDates: plant.lastWateredDates)
-                            .padding()
+
                         
                         VStack{
                             if !plant.notes.isEmpty {
@@ -110,9 +110,6 @@ struct PlantDetailView: View{
                                 .cornerRadius(10)
                         }
                         
-                        Button(action: {viewModel.waterPlant(plant: plant)}){
-                            Text("Podlej roślinę")
-                        }
                         Button(action: {showImagePicker = true}){
                             Text("dodaj zdjęcie")
                         }

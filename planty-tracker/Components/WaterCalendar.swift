@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct WaterCalendar: View {
-    let wateredDates: [Date]
+    @State private var wateredDates: [Date]
+    let plant: Plant
 
-    // computed property kalendarza z firstWeekday ustawionym na poniedziałek (2)
     private var calendar: Calendar {
         var cal = Calendar.current
         cal.firstWeekday = 2
@@ -26,6 +26,16 @@ struct WaterCalendar: View {
         return calendar.date(from: components)!
     }()
     
+    @ObservedObject var viewModel: PlantViewModel
+    @State private var showDatePicker: Bool = false
+    @State private var chosenDate: Date?
+    @State private var alertMessage: String = ""
+    
+    init(plant: Plant, viewModel: PlantViewModel) {
+        self.plant = plant
+        self._wateredDates = State(initialValue: plant.lastWateredDates)
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         let today = Date()
@@ -90,10 +100,20 @@ struct WaterCalendar: View {
                     let date = calendar.date(byAdding: .day, value: day - 1, to: firstDayOfMonth)!
 
                     VStack {
-                        Text("\(day)")
-                            .font(.caption)
-                            .fontWeight(calendar.isDate(date, inSameDayAs: today) ? .bold : .regular)
-                            .foregroundColor(calendar.isDate(date, inSameDayAs: today) ? .blue : .primary)
+                        Button(action: {
+                            chosenDate = date
+                            if wateredDates.contains(where: { calendar.isDate($0, inSameDayAs: date)}){
+                                alertMessage = "Czy chcesz usunąć date podlewania dla tego dnia?"
+                            } else {
+                                alertMessage = "Czy chcesz w tym dniu podleć roślinę?"
+                            }
+                            showDatePicker = true
+                        }){
+                            Text("\(day)")
+                                .font(.caption)
+                                .fontWeight(calendar.isDate(date, inSameDayAs: today) ? .bold : .regular)
+                                .foregroundColor(calendar.isDate(date, inSameDayAs: today) ? .blue : .primary)
+                        }
 
                         if wateredDates.contains(where: { calendar.isDate($0, inSameDayAs: date) }) {
                             Image(systemName: "drop.fill")
@@ -121,6 +141,20 @@ struct WaterCalendar: View {
             
             if currentMonthComponents.year != nowComponents.year || currentMonthComponents.month != nowComponents.month {
                 currentMonth = calendar.date(from: nowComponents)!
+            }
+        }
+        .alert(alertMessage, isPresented: $showDatePicker){
+            Button("Nie", role: .cancel){}
+            Button("Tak"){
+                if let date = chosenDate {
+                    if let index = wateredDates.firstIndex(where: {calendar.isDate($0, inSameDayAs: date)}){
+                        wateredDates.remove(at: index)
+                        viewModel.deleteWateredDate(from: plant, at: index)
+                    } else{
+                        wateredDates.append(date)
+                        viewModel.wateredPlant(plant: plant, on: date)
+                    }
+                }
             }
         }
     }
