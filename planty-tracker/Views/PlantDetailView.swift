@@ -76,7 +76,7 @@ struct PlantDetailView: View{
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .frame(maxHeight: 300)
-                        .background(.thinMaterial)
+                        .background(.white.opacity(0.14))
                         .cornerRadius(12)
                         .padding()
                         
@@ -92,8 +92,8 @@ struct PlantDetailView: View{
                                     }
                                     .frame(maxWidth: .infinity)
                                     .padding()
-                                    .background(Color.deepTeal)
-                                    .foregroundStyle(Color.white)
+                                    .background(themeManager.isDarkMode ? Color.lightYellow.opacity(0.8) :  Color.deepTeal)
+                                    .foregroundStyle(themeManager.isDarkMode ? Color.deepTeal : Color.white)
                                     .cornerRadius(10)
                                         
                                 }
@@ -109,8 +109,8 @@ struct PlantDetailView: View{
                                     }
                                     .frame(maxWidth: .infinity)
                                     .padding()
-                                    .background(Color.deepTeal)
-                                    .foregroundStyle(Color.white)
+                                    .background(themeManager.isDarkMode ? Color.lightYellow.opacity(0.8) :  Color.deepTeal)
+                                    .foregroundStyle(themeManager.isDarkMode ? Color.deepTeal : Color.white)
                                     .cornerRadius(10)
                                 }
                                 
@@ -137,7 +137,7 @@ struct PlantDetailView: View{
                         .resizable()
                         .scaledToFit()
                         .frame(width: 34, height: 34)
-                        .foregroundStyle(Color.darkTeal)
+                        .foregroundStyle(themeManager.isDarkMode ? Color.lightYellow.opacity(0.8) :  Color.deepTeal)
                 }
                 
                 Button(action: {
@@ -147,7 +147,7 @@ struct PlantDetailView: View{
                         .resizable()
                         .scaledToFit()
                         .frame(width: 34, height: 34)
-                        .foregroundStyle(Color.red.opacity(0.7))
+                        .foregroundStyle(themeManager.isDarkMode ? Color.red : Color.red.opacity(0.7))
                 }
             })
             

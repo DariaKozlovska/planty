@@ -27,6 +27,7 @@ struct WaterCalendar: View {
     }()
     
     @ObservedObject var viewModel: PlantViewModel
+    @EnvironmentObject var themeManager: ThemeManager
     @State private var showDatePicker: Bool = false
     @State private var chosenDate: Date?
     @State private var alertMessage: String = ""
@@ -61,8 +62,8 @@ struct WaterCalendar: View {
                         .scaledToFit()
                         .padding(6)
                         .frame(width: 26, height: 26)
-                        .foregroundColor(.darkTeal)
-                        .background(Color.darkTeal.opacity(0.3))
+                        .foregroundColor(themeManager.isDarkMode ? .white : .darkTeal)
+                        .background(themeManager.isDarkMode ? .white.opacity(0.3) : Color.darkTeal.opacity(0.3))
                         .cornerRadius(6)
                 }
                 Spacer()
@@ -78,8 +79,8 @@ struct WaterCalendar: View {
                         .scaledToFit()
                         .padding(6)
                         .frame(width: 26, height: 26)
-                        .foregroundColor(.darkTeal)
-                        .background(Color.darkTeal.opacity(0.3))
+                        .foregroundColor(themeManager.isDarkMode ? .white : .darkTeal)
+                        .background(themeManager.isDarkMode ? .white.opacity(0.3) : Color.darkTeal.opacity(0.3))
                         .cornerRadius(6)
                 }
             }
@@ -142,7 +143,7 @@ struct WaterCalendar: View {
             }
         }
         .padding()
-        .background(.thinMaterial)
+        .background(.white.opacity(0.14))
         .cornerRadius(12)
         .onReceive(timer) { _ in
             let now = Date()
