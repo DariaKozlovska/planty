@@ -140,7 +140,6 @@ struct WaterCalendar: View {
                     .cornerRadius(6)
                 }
             }
-            .frame(maxHeight: .infinity)
         }
         .padding()
         .background(.thinMaterial)
