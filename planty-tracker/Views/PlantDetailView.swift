@@ -59,35 +59,36 @@ struct PlantDetailView: View{
                                 .padding()
                             
                         }
-
                         
-                        VStack{
+                        
+                        
+                        VStack(alignment: .leading, spacing: 4) {
                             if !plant.notes.isEmpty {
-                                Text(plant.notes)
-                                    .multilineTextAlignment(.center)
-                                    .background(.thinMaterial)
-                            }
-                        }
-                        
-                        ScrollView{
-                            HStack{
-                                ForEach(Array(plant.photos.enumerated()), id: \.element.id){ index, photo in
-                                    if let image = UIImage(data: photo.imageData){
-                                        VStack{
-                                            Image(uiImage: image)
-                                                .resizable()
-                                                .frame(width: 180, height: 180)
-                                            Button(action: {viewModel.deletePhoto(from: plant, at: index)}){
-                                                Image(systemName: "cross.circle")
-                                                    .resizable()
-                                                    .frame(width: 20, height: 20)
-                                                    .foregroundColor(.gray)
-                                            }
-                                        }
-                                    }
+                                Text("Twoja notatka")
+                                    .font(.custom("Exo2-SemiBold", size: 18))
+                                    .padding(.top)
+                                    .frame(maxWidth: .infinity, alignment: .center)
+
+                                ScrollView {
+                                    Text(plant.notes)
+                                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                                        .multilineTextAlignment(.leading)
+                                        .padding()
                                 }
                             }
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .frame(maxHeight: 300)
+                        .background(.thinMaterial)
+                        .cornerRadius(12)
+                        .padding()
+                        
+                        VStack{
+                            Text("Galeria wzrostu")
+                                .font(.custom("Exo2-SemiBold", size: 18))
+                            Gallery(plantId: plantId, viewModel: viewModel)
+                        }
+                        .padding()
                     }
                     HStack (spacing: 10){
                         Button(action: {showEditView = true}){
