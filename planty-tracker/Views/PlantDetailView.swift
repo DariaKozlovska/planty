@@ -29,7 +29,6 @@ struct PlantDetailView: View{
             ScrollView{
                 if let plant = plant{
                     VStack{
-                        
                         Group {
                             if let image = plant.profilePhoto {
                                 Image(uiImage: image)
@@ -60,8 +59,6 @@ struct PlantDetailView: View{
                             
                         }
                         
-                        
-                        
                         VStack(alignment: .leading, spacing: 4) {
                             if !plant.notes.isEmpty {
                                 Text("Twoja notatka")
@@ -87,40 +84,42 @@ struct PlantDetailView: View{
                             Text("Galeria wzrostu")
                                 .font(.custom("Exo2-SemiBold", size: 18))
                             Gallery(plantId: plantId, viewModel: viewModel)
+                            HStack{
+                                Button(action: {showImagePicker = true}){
+                                    HStack{
+                                        Text("Dodaj zdjęcie")
+                                        Image(systemName: "photo.fill")
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.deepTeal)
+                                    .foregroundStyle(Color.white)
+                                    .cornerRadius(10)
+                                        
+                                }
+                                .sheet(isPresented: $showImagePicker){
+                                    ImagePicker{ image in
+                                        viewModel.addPhotos(to: plant, image: image)
+                                    }
+                                }
+                                Button (action: {}){
+                                    HStack{
+                                        Text("Zobacz galerię")
+                                        Image(systemName: "arrow.right")
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.deepTeal)
+                                    .foregroundStyle(Color.white)
+                                    .cornerRadius(10)
+                                }
+                                
+                            }
+
                         }
                         .padding()
                     }
-                    HStack (spacing: 10){
-                        Button(action: {showEditView = true}){
-                            Text("Edit")
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.blue)
-                                .foregroundColor(Color.white)
-                                .cornerRadius(10)
-                        }
-                        
-                        Button(action: {
-                            showDeleteConfirmation = true
-                        }){
-                            Text("Delete")
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .foregroundColor(Color.white)
-                                .background(Color.red)
-                                .cornerRadius(10)
-                        }
-                        
-                        Button(action: {showImagePicker = true}){
-                            Text("dodaj zdjęcie")
-                        }
-                        .sheet(isPresented: $showImagePicker){
-                            ImagePicker{ image in
-                                viewModel.addPhotos(to: plant, image: image)
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
+                    
                 }
             }
             .navigationDestination(isPresented: $showEditView){
@@ -132,6 +131,26 @@ struct PlantDetailView: View{
                     .environmentObject(themeManager)
                 }
             }
+            .navigationBarItems(trailing: HStack {
+                Button(action: {showEditView = true}){
+                    Image(systemName: "pencil.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 34, height: 34)
+                        .foregroundStyle(Color.darkTeal)
+                }
+                
+                Button(action: {
+                    showDeleteConfirmation = true
+                }){
+                    Image(systemName: "trash.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 34, height: 34)
+                        .foregroundStyle(Color.red.opacity(0.7))
+                }
+            })
+            
             .alert("Czy na pewno chcesz usunąć tę plantę?", isPresented: $showDeleteConfirmation){
                 Button("Nie", role: .cancel){}
                 Button("Tak", role: .destructive){
@@ -139,79 +158,6 @@ struct PlantDetailView: View{
                         onDeletePlant(plant)
                         dismiss()
                     }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                 }
             }
         }
