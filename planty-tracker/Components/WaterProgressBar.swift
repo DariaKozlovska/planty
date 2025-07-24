@@ -15,8 +15,8 @@ struct WaterProgressBar: View {
     
     var body: some View {
         let totalDays = frequency
-        let daysSince = Calendar.current.dateComponents([.second], from: lastWatered, to: now).day ?? 0
-        let progress = min(Double(daysSince) / 10.0, 1.0)
+        let daysSince = Calendar.current.dateComponents([.day], from: lastWatered, to: now).day ?? 0
+        let progress = min(Double(daysSince) / Double(totalDays), 1.0)
         let daysRemaining = max(totalDays - daysSince, 0)
         
         VStack(alignment: .leading, spacing: 8){
@@ -47,13 +47,11 @@ struct WaterProgressBar: View {
             .frame(height: 6)
         }
         .padding(.vertical, 8)
-//        .onReceive(
-//            Timer.publish(every: 2, on: .main, in: .common).autoconnect()
-//        ) { newDate in
-//            print("⏰ Timer triggered at: \(newDate)")
-//            print(Date())
-//            self.now = newDate
-//        }
+        .onReceive(
+            Timer.publish(every: 3600, on: .main, in: .common).autoconnect()
+        ) { newDate in
+            self.now = newDate
+        }
     }
     
     private func formattedDate(_ date: Date) -> String {

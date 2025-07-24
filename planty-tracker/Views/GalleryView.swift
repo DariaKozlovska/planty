@@ -64,9 +64,7 @@ struct GalleryView: View {
                                                     .clipped()
                                                     .cornerRadius(8)
 
-                                                // Przycisk usuń
                                                 Button(action: {
-                                                    // akcja usuwania zdjęcia
                                                     viewModel.deletePhoto(from: plant, at: index)
                                                 }) {
                                                     Image(systemName: "xmark.circle.fill")
@@ -76,7 +74,6 @@ struct GalleryView: View {
                                                 }
                                                 .padding(6)
 
-                                                // Data zdjęcia – przyklejona na dole
                                                 VStack {
                                                     Spacer()
                                                     Text(photo.date.formatted(date: .abbreviated, time: .omitted))
@@ -95,7 +92,7 @@ struct GalleryView: View {
                                 .padding(spacing)
                             }
                         }
-                        .frame(height: 300) // lub inna wysokość, by ograniczyć GeometryReader
+                        .frame(height: 300)
                     } else {
                         Text("Brak zdjęć")
                             .font(.caption)
