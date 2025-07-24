@@ -17,6 +17,7 @@ struct PlantDetailView: View{
     @State private var showDeleteConfirmation: Bool = false
     @State private var showEditView: Bool = false
     @State private var showImagePicker: Bool = false
+    @State private var goToGallery: Bool = false
     @EnvironmentObject var themeManager: ThemeManager
     
     var plant: Plant?{
@@ -55,7 +56,7 @@ struct PlantDetailView: View{
                             Text("Częstotliwość polewu: co \(plant.wateringFrequency.description) dni")
                             
                             WaterCalendar(plant: plant, viewModel: viewModel)
-                                .padding()
+                                .padding(.horizontal)
                             
                         }
                         
@@ -78,7 +79,7 @@ struct PlantDetailView: View{
                         .frame(maxHeight: 300)
                         .background(.white.opacity(0.14))
                         .cornerRadius(12)
-                        .padding()
+                        .padding(.horizontal)
                         
                         VStack{
                             Text("Galeria wzrostu")
@@ -102,7 +103,7 @@ struct PlantDetailView: View{
                                         viewModel.addPhotos(to: plant, image: image)
                                     }
                                 }
-                                Button (action: {}){
+                                Button (action: {goToGallery = true}){
                                     HStack{
                                         Text("Zobacz galerię")
                                         Image(systemName: "arrow.right")
@@ -117,7 +118,7 @@ struct PlantDetailView: View{
                             }
 
                         }
-                        .padding()
+                        .padding(.horizontal)
                     }
                     
                 }
@@ -130,6 +131,10 @@ struct PlantDetailView: View{
                     }
                     .environmentObject(themeManager)
                 }
+            }
+            .navigationDestination(isPresented: $goToGallery){
+                GalleryView(plantId: plantId, viewModel: viewModel)
+                    .environmentObject(themeManager)
             }
             .navigationBarItems(trailing: HStack {
                 Button(action: {showEditView = true}){

@@ -22,7 +22,7 @@ struct Gallery: View {
                 let imageWidth = (geometry.size.width - 2 * spacing) / 3
 
                 HStack(spacing: spacing) {
-                    ForEach(Array(plant.photos.suffix(3).enumerated()), id: \.element.id) { index, photo in
+                    ForEach(Array(plant.photos.suffix(3).reversed().enumerated()), id: \.element.id) { index, photo in
                         if let image = UIImage(data: photo.imageData) {
                             ZStack(alignment: .bottom) {
                                 Image(uiImage: image)
